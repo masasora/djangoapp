@@ -1,0 +1,57 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'gazou/css/reset.css' %}"/>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'gazou/css/style.css' %}"/>
+    <link rel="icon" href="../../static/gazou/image/favicon.ico">    
+</head>
+<body>
+    <body>
+        <nav>
+            <a href="../gazou">メニュー(今後追加予定)</a>
+        </nav>
+    <form action="{% url 'gazougazou' %}" method="post">
+        <div class="fieldallWrap">
+            {% csrf_token %}
+            {% for field in form %}  <!-- これ書くだけでいくつかのエラーが起こらなくなる -->
+            <div class="field">
+                {{ field.label_tag }} <!-- 入力名表示 -->
+                {{ field }} <!-- 入力欄が表示された -->
+                {% if field.help_text %}
+                    <span class="helptext">{{ field.help_text }}</span>
+                {% endif %}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <div class="button">
+                <input type="submit" value="くりっく" class="buttonPOP">
+            </div>
+        </div>
+        {% if not temp_list %}
+            <r>対象のアカウントは見つかりませんでした</r>   
+        {% else %}
+            {% for item in temp_list %}
+            <div class="listWrap">
+                <div class="nametitleWrap">
+                    <r><a href={{item.URL}} target="_blank">{{item.namename}}</a></r>
+                </div>
+                <div class="topicWrap">
+                    <figure><img src="{{item.backimage}}"></figure>
+                    <r>フォロー数:{{item.friend}}<br>
+                    フォロワー数:{{item.flcount}}<br>
+                    ID:{{item.sc}}</r>
+                </div>
+                <r>説明文:{{item.diss}}</r>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </form>
+    <footer>
+    </footer>
+</body>
+</html>

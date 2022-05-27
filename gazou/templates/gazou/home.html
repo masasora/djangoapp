@@ -1,0 +1,86 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'gazou/css/reset.css' %}"/>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'gazou/css/style.css' %}"/>
+    <link rel="icon" href="../../static/gazou/image/favicon.ico">
+    </head>
+<body>
+    <header>
+        <nav>
+            <a href="../gazou">メニュー(今後追加予定)</a>
+        </nav>
+        <div class="titleWrap">
+            <h1>プチ有名人探し</h1>
+        </div>
+        <div class="innerWrap">
+            <div class="easydissWrap">
+                <p>あなたが好きな界隈の有名人達を検索するアプリです。</p>
+            </div>
+            <div class="nowstartWrap">
+                <a href="#step1Area" class="clickstartWrap">今すぐ始める</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="innerWrap">
+            <h2 id="step1Area">使い方</h2>
+            <div class="Step">
+                <section>
+                    <h3>STEP 1/4</h3>
+                    <p>あなたの好きな界隈に所属する人のツイッターID(@から始まるもの)を入力する(フォロー数1000人付近がおすすめ)</p>
+                </section>
+            </div>
+            <div class="Step">
+                <section>
+                    <h3>STEP 2/4</h3>
+                    <p>あなたの好きな界隈名を入力する。例:「阪神」「ゴルフ」「ポケモン」など</p>
+                </section>
+            </div>
+            <div class="Step">
+                <section>
+                    <h3>STEP 3/4</h3>
+                    <p>貴方が有名人だと判断するフォロワー数を入力する。(10000人以上のフォロワーを有するユーザーを検索したい場合は10000と入力する。)</p>
+                </section>
+            </div>
+            <div class="Step">
+                <section>
+                    <h3>STEP 4/4</h3>
+                    <p>ボタンをクリック！</p>
+                    <p>※入力したユーザーのフォロー数が多いと時間がかかります。(具体的には100フォローにつき1.5秒)</p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <form action="{% url 'gazougazou' %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}  <!-- これ書くだけでいくつかのエラーが起こらなくなる -->
+        <div class="field">
+            {{ field.label_tag }} <!-- 入力名表示 -->
+            {{ field }} <!-- 入力欄が表示された -->
+            {% if field.help_text %}
+                <span class="helptext">{{ field.help_text }}</span>
+            {% endif %}
+            {{ field.errors }}
+        </div>
+        {% endfor %}
+        <div class="button">
+            <label><input type="submit" value="くりっく" class="buttonPOP"></label>
+        </div>
+
+        {% for item in temp_list %}
+            <a href={{item.URL}} target="_blank">{{item.namename}}</a>
+            <img src="{{item.backimage}}">
+            <r>{{item.flcount}}</r>
+            {{item.diss}}
+        {% endfor %}
+        
+    </form>
+</body>
+</html>
