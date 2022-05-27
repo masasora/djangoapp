@@ -23,7 +23,7 @@ def twifow(request):
         auth = tweepy.OAuthHandler(CK, CS)
         auth.set_access_token(AT, AS)
 
-        api = tweepy.API(auth)#,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
+        api = tweepy.API(auth)
 
         searchname=request.POST['name'] #ユーザーIDを入れる。
         fl_count=int(request.POST['fl']) #最低フォロワー数を入れる
