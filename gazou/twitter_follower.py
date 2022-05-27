@@ -13,7 +13,7 @@ def twifow(request):
         'form': GazouForm()
     }
 
-    if (request.method == 'POST'):
+    if (request.method == 'POST'):#入力があるかどうか
         CK='tum0zklqVOtWBLHMthVDcTypF'
         CS='FlQNMOjZDqWxigsNFl3b4s9tT05oUyiHi2kDn4E6nN5bLw4QQU'
         AT='1096782968176033792-45qNqgEJvfpyTpuOvmJkyxkl5NGikS'
@@ -25,9 +25,9 @@ def twifow(request):
 
         api = tweepy.API(auth)#,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
-        searchname=request.POST['name']
-        fl_count=int(request.POST['fl'])
-        header_point=(request.POST['word'])
+        searchname=request.POST['name'] #ユーザーIDを入れる。
+        fl_count=int(request.POST['fl']) #最低フォロワー数を入れる
+        header_point=(request.POST['word']) #界隈名を入れる
 
         friends_ids = [] #対象ユーザーがフォローしている人を入れる箱
         Big_friends_ids= [] #friend_idsの中のユーザーからフォロワーが多い人を入れる箱
@@ -41,11 +41,11 @@ def twifow(request):
         # フォローした人のIDを全取得
         # Cursor使うとすべて取ってきてくれるが，配列ではなくなるので配列に入れる
         try:
-            for friend_id in tweepy.Cursor(api.get_friend_ids, screen_name=searchname).items():#スクリーンネーム(@で始まるやつ)でok
+            for friend_id in tweepy.Cursor(api.get_friend_ids, screen_name=searchname).items():#指定したユーザーがフォローしている人を順に取り出す。
                 friends_ids.append(friend_id)
             for i in range(0, len(friends_ids), 100):
                 for user in api.lookup_users(user_id=friends_ids[i:i+100]):
-                    if user.followers_count > fl_count and header_point in user.description: #フォロワーが多い人だけ選出。data.follower_countはそのユーザーのフォロワー数を持ってくる。
+                    if user.followers_count > fl_count and header_point in user.description: #フォロワーが多い人だけ選出。
                         Big_friends_ids.append("https://twitter.com/{}".format(user.screen_name))
                         fl_name.append(user.name)
                         backimage.append(user.profile_image_url_https)
@@ -75,7 +75,7 @@ def twifow(request):
         except tweepy.errors.TweepyException:
             return render(request,'gazou/exceptall.html',params) #tweepyエラー全般が起きた場合。
 
-        return render(request, 'gazou/hometown.html', params) #正常な場合。
+        return render(request, 'gazou/hometown.html', params) #正常な場合
 
     else:
         return render(request, 'gazou/home.html', params) #フォームに入力せずにここに辿り着いた場合
