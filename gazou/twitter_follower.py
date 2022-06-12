@@ -14,10 +14,10 @@ def twifow(request):
     }
 
     if (request.method == 'POST'):#入力があるかどうか
-        CK='tum0zklqVOtWBLHMthVDcTypF'
-        CS='FlQNMOjZDqWxigsNFl3b4s9tT05oUyiHi2kDn4E6nN5bLw4QQU'
-        AT='1096782968176033792-45qNqgEJvfpyTpuOvmJkyxkl5NGikS'
-        AS='Hrp1MWuP62JYOMbIbdZNKSlbZxvK5iCLShFRo2Rex6tTy'
+        CK='*'
+        CS='*'
+        AT='*'
+        AS='*'
 
         # Twitterオブジェクトの生成
         auth = tweepy.OAuthHandler(CK, CS)
